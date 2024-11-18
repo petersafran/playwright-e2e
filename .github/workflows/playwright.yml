@@ -77,7 +77,7 @@ jobs:
                   "body": [
                     {
                       "type": "TextBlock",
-                      "text": "Playwright test results + ${{ env.TESTS }}",
+                      "text": "Playwright test results + ${{ needs.env.TESTS }}",
                       "wrap": true,
                       "fontType": "Default",
                       "style": "heading",
