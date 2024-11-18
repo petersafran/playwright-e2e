@@ -53,6 +53,8 @@ jobs:
       - name: Read Summary Report to Get Test Results
         if: always()
         run: |
+          LS=$(ls -l)
+          echo LS=$LS >> $GITHUB_ENV
           TESTS=$(cat .\ctrf\ctrf-report.json | jq -r '.results.summary.tests')
           echo "TESTS=$TESTS" >> $GITHUB_ENV 
           PASSED=$(cat .\ctrf\ctrf-report.json | jq -r '.results.summary.passed' | tr '\n' ' ')
