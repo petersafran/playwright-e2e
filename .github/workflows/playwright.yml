@@ -79,7 +79,7 @@ jobs:
                   "body": [
                     {
                       "type": "TextBlock",
-                      "text": "Playwright test results + ${{PASSED}}",
+                      "text": "Playwright test results + ${{ env.PASSED }}",
                       "wrap": true,
                       "fontType": "Default",
                       "style": "heading",
