@@ -15,7 +15,7 @@ jobs:
         envName: "asdf"
     outputs:
       TESTS: ${{steps.json_properties.outputs.value}}
-      
+      PASSED: ${{steps.json_properties.outputs.results.summary.passed}}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -52,10 +52,11 @@ jobs:
       uses: ActionsTools/read-json-action@main
       with:
         file_path: "./ctrf/ctrf-report.json"
-        prop_path: "results.summary.tests"
     - run: |
-        TESTS=${{steps.json_properties.outputs.value}}
+        TESTS=${{steps.json_properties.outputs.results.summary.tests}}
         echo TESTS=$TESTS >> $GITHUB_OUTPUT
+        PASSED=${{steps.json_properties.outputs.results.summary.passed}}
+        echo PASSED=$PASSED >> $GITHUB_OUTPUT
   send-teams-notification:
     runs-on: ubuntu-latest
     needs: test
