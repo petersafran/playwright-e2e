@@ -44,3 +44,46 @@ jobs:
     - name: Publish CTRF Custom summary
       run: npx github-actions-ctrf custom ctrf/ctrf-report.json templates/customReport.hbs
       if: always()
+
+  send-teams-notification:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Send teams notification
+    steps:
+      - name: Post to Teams
+        run: | 
+          response=$(curl -H "Content-Type: application/json" \
+          "https://dilcorp.webhook.office.com/webhookb2/08b54ac0-14ae-4994-8005-6cf6c0b1c4f7@80359a55-fc53-4acf-af25-a2e6e3ebf779/IncomingWebhook/9b3396dc028f4744ab2dc70d83833fc2/5bb5f15a-f91c-4fa9-a51a-453eb8b37399/V2thCr04Yl04Htlz1nTKL62YOVPxTFlfEIXrozDRTJoYA1" \
+          -d '{  
+            "type":"message",  
+            "attachments":[  
+              {  
+                  "team": "DIL-BLC-ENV-INFO",
+                  "channel": "Saf playground",
+                  "contentType":"application/vnd.microsoft.card.adaptive",  
+                  "contentUrl":null,  
+                  "content": {
+                  "type": "AdaptiveCard",
+                  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  "version": "1.4",
+                  "body": [
+                      {
+                          "type": "TextBlock",
+                          "text": "Playwright test results",
+                          "wrap": true,
+                          "fontType": "Default",
+                          "style": "heading",
+                          "size": "ExtraLarge",
+                          "weight": "Bolder",
+                          "color": "Default"
+                      }                                      
+                    ]
+                }
+              ]
+          }')
+
+          echo $response
+          if [[ $response == *'failure'* || $response == *'error'* ]]; then
+            echo 'Request failed'
+            exit 1
+          fi  
