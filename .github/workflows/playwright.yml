@@ -53,13 +53,13 @@ jobs:
       - name: Read Summary Report to Get Test Results
         if: always()
         run: |
-          LS=$(ls -l)
+          ls -l
           echo LS=$LS >> $GITHUB_ENV
-          TESTS=$(cat .\ctrf\ctrf-report.json | jq -r '.results.summary.tests')
+          TESTS=$(cat .\ctrf-report.json | jq -r '.results.summary.tests')
           echo "TESTS=$TESTS" >> $GITHUB_ENV 
-          PASSED=$(cat .\ctrf\ctrf-report.json | jq -r '.results.summary.passed' | tr '\n' ' ')
+          PASSED=$(cat .\ctrf-report.json | jq -r '.results.summary.passed' | tr '\n' ' ')
           echo "PASSED=$PASSED" >> $GITHUB_ENV 
-          FAILURES=$(cat .\ctrf\ctrf-report.json | jq -r '.results.summary.failed' | tr '\n' ' ')
+          FAILURES=$(cat .\ctrf-report.json | jq -r '.results.summary.failed' | tr '\n' ' ')
           FAILURES=$FAILURES
           echo "FAILURES=$FAILURES" >> $GITHUB_ENV
       - name: Post to Teams
