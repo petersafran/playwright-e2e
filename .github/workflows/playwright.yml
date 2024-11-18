@@ -53,9 +53,9 @@ jobs:
       with:
         file_path: "./ctrf/ctrf-report.json"
     - run: |
-        TESTS=${{steps.json_properties.outputs.results.summary.tests}}
+        TESTS=${{steps.json_properties.outputs.results.summary.tests.value}}
         echo TESTS=$TESTS >> $GITHUB_OUTPUT
-        PASSED=${{steps.json_properties.outputs.results.summary.passed}}
+        PASSED=${{steps.json_properties.outputs.results.summary.passed.value}}
         echo PASSED=$PASSED >> $GITHUB_OUTPUT
   send-teams-notification:
     runs-on: ubuntu-latest
