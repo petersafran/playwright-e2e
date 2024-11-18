@@ -38,8 +38,8 @@ jobs:
       run: npx github-actions-ctrf summary ctrf/ctrf-report.json
       if: always()
     - name: Publish CTRF Detailed Test Summary Results
-      run: npx github-actions-ctrf tests  ctrf/ctrf-report.json
+      run: npx github-actions-ctrf tests ctrf/ctrf-report.json
       if: always()
     - name: Publish CTRF Custom summary
-      run: npx github-actions-ctrf custom  ctrf/ctrf-report.json handlebars-template.hbs
+      run: npx github-actions-ctrf custom ctrf/ctrf-report.json templates/customReport.hbs
       if: always()
