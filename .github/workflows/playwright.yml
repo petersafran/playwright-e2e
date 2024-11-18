@@ -32,14 +32,14 @@ jobs:
         path: ./playwright-report/
         retention-days: 30
     - name: Publish CTRF Test Summary Results
-      run: npx github-actions-ctrf ctrf\ctrf-report.json
+      run: npx github-actions-ctrf ctrf/\ctrf-report.json
       if: always()
     - name: Publish CTRF Test Summary Results
-      run: npx github-actions-ctrf summary ctrf\ctrf-report.json
+      run: npx github-actions-ctrf summary ctrf/ctrf-report.json
       if: always()
     - name: Publish CTRF Detailed Test Summary Results
-      run: npx github-actions-ctrf tests path-to-your-ctrf-report.json
+      run: npx github-actions-ctrf tests  ctrf/ctrf-report.json
       if: always()
     - name: Publish CTRF Custom summary
-      run: npx github-actions-ctrf custom path-to-your-ctrf-report.json path-to-your-handlebars-template.hbs
+      run: npx github-actions-ctrf custom  ctrf/ctrf-report.json handlebars-template.hbs
       if: always()
