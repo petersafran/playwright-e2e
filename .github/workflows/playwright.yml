@@ -44,24 +44,20 @@ jobs:
     - name: Publish CTRF Custom summary
       run: npx github-actions-ctrf custom ctrf/ctrf-report.json templates/customReport.hbs
       if: always()
-
+    - name: Read Summary Report to Get Test Results
+      if: always()
+      run: |          
+          TESTS=$(cat ctrf/ctrf-report.json | jq -r '.results.summary.tests')
+          echo "TESTS=$TESTS" >> $GITHUB_ENV 
+          PASSED=$(cat ctrf/ctrf-report.json | jq -r '.results.summary.passed')
+          echo "PASSED=$PASSED" >> $GITHUB_ENV 
+          FAILURES=$cat ctrf/ctrf-report.json | jq -r '.results.summary.failed')
+          echo "FAILURES=$FAILURES" >> $GITHUB_ENV
   send-teams-notification:
     runs-on: ubuntu-latest
     needs: test
     name: Send teams notification
-    steps:
-      - name: Read Summary Report to Get Test Results
-        if: always()
-        run: |
-          ls -l
-          echo LS=$LS >> $GITHUB_ENV
-          TESTS=$(cat .\ctrf-report.json | jq -r '.results.summary.tests')
-          echo "TESTS=$TESTS" >> $GITHUB_ENV 
-          PASSED=$(cat .\ctrf-report.json | jq -r '.results.summary.passed' | tr '\n' ' ')
-          echo "PASSED=$PASSED" >> $GITHUB_ENV 
-          FAILURES=$(cat .\ctrf-report.json | jq -r '.results.summary.failed' | tr '\n' ' ')
-          FAILURES=$FAILURES
-          echo "FAILURES=$FAILURES" >> $GITHUB_ENV
+    steps:     
       - name: Post to Teams
         run: | 
           response=$(curl -H "Content-Type: application/json" \
