@@ -50,6 +50,16 @@ jobs:
     needs: test
     name: Send teams notification
     steps:
+      - name: Read Summary Report to Get Test Results
+        if: always()
+        run: |
+          TESTS=$(cat ctrf/ctrf-report.json | jq -r '.summary.tests')
+          echo "TESTS=$TESTS" >> $GITHUB_ENV 
+          PASSED=$(cat ctrf/ctrf-report.json | jq -r '.summary.passed' | tr '\n' ' ')
+          echo "PASSED=$PASSED" >> $GITHUB_ENV 
+          FAILURES=$(cat ctrf/ctrf-report.json | jq -r '.summary.failed' | tr '\n' ' ')
+          FAILURES=$FAILURES
+          echo "FAILURES=$FAILURES" >> $GITHUB_ENV
       - name: Post to Teams
         run: | 
           response=$(curl -H "Content-Type: application/json" \
@@ -69,7 +79,7 @@ jobs:
                   "body": [
                     {
                       "type": "TextBlock",
-                      "text": "Playwright test results",
+                      "text": "Playwright test results + ${{PASSED}}",
                       "wrap": true,
                       "fontType": "Default",
                       "style": "heading",
