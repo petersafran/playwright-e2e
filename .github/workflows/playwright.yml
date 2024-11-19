@@ -65,7 +65,7 @@ jobs:
       - name: Post to Teams
         run: | 
           response=$(curl -H "Content-Type: application/json" \
-          "https://dilcorp.webhook.office.com/webhookb2/08b54ac0-14ae-4994-8005-6cf6c0b1c4f7@80359a55-fc53-4acf-af25-a2e6e3ebf779/IncomingWebhook/9b3396dc028f4744ab2dc70d83833fc2/5bb5f15a-f91c-4fa9-a51a-453eb8b37399/V2thCr04Yl04Htlz1nTKL62YOVPxTFlfEIXrozDRTJoYA1" \
+          "" \
           -d '{
             "type": "message",
             "attachments": [
