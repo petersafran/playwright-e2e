@@ -32,8 +32,8 @@ jobs:
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: playwright-report
-        path: ./playwright-report/
+        name: reportFile
+        path: ./ctrf/ctrf-report.json
         retention-days: 30
     - name: Publish CTRF Test Summary Results
       run: npx github-actions-ctrf ctrf/ctrf-report.json
@@ -44,15 +44,16 @@ jobs:
     - name: Publish CTRF Detailed Test Summary Results
       run: npx github-actions-ctrf tests ctrf/ctrf-report.json
       if: always()
-    - name: Publish CTRF Custom summary
-      run: npx github-actions-ctrf custom ctrf/ctrf-report.json templates/customReport.hbs
-      if: always()
-    - name: Read Summary Report to Get Test Results
-      if: always()
-      run: |          
-          TESTS=$(cat ctrf/ctrf-report.json | jq '.results.summary.tests')
-          echo "TESTS=$TESTS" >> $GITHUB_ENV 
-          PASSED=$(cat ctrf/ctrf-report.json | jq '.results.summary.passed')
-          echo "PASSED=$PASSED" >> $GITHUB_ENV 
-          FAILURES=$cat ctrf/ctrf-report.json | jq '.results.summary.failed')
-          echo "FAILURES=$FAILURES" >> $GITHUB_ENV
+  report_result:
+    timeout-minutes: 60
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: reportFile
+      - shell: bash
+        run: |
+          value=$(cat ctrf-report.json | jq '.results.summary.passed')
+          echo value=$value
