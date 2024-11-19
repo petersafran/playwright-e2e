@@ -55,5 +55,13 @@ jobs:
           name: reportFile
       - shell: bash
         run: |
-          value=$(cat ctrf-report.json | jq '.results.summary.passed')
-          echo value=$value
+          TESTS=$(cat ctrf-report.json | jq '.results.summary.tests')
+          echo TESTS=$TESTS
+          PASSED=$(cat ctrf-report.json | jq '.results.summary.passed')
+          echo PASSED=$PASSED
+          FAILED=$(cat ctrf-report.json | jq '.results.summary.failed')
+          echo FAILED=$FAILED
+          SKIPPED=$(cat ctrf-report.json | jq '.results.summary.skipped')
+          echo SKIPPED=$SKIPPED
+          
+          
